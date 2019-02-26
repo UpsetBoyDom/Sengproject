@@ -1,0 +1,65 @@
+body {
+		
+		background:url("13598.jpg") no-repeat center center fixed;;
+				  /* Full height */
+	  height: 100%; 
+
+	  font-family: Tahoma, Geneva, sans-serif;
+
+	  /* Center and scale the image nicely */
+	 -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+
+
+
+	}
+* {box-sizing: border-box}
+		h1{
+			text-align: center;
+		}
+		.form{
+			background-color: rgba(80, 80, 77, 1);
+			border-radius: 8px; 
+			margin:0 auto;
+			text-align: center;
+			width: 600px;
+	
+			padding: 8px 8px 8px 8px;
+		
+
+
+
+		}
+		#page1{
+			display: block;
+		}
+		#page2{
+			display: none;
+		}
+		.form-inp{
+			width: 100%;
+			  padding: 15px;
+			  border-radius: 8px;
+			  margin: 5px 0 22px 0;
+			  display: inline-block;
+			border:none;
+			  background: #f1f1f1;
+		}
+		.register{
+			padding: 8px 8px 8px 8px;
+		}
+		.subbtn{
+			background-color: #232323;
+			border: none;
+    		outline:none;
+    		border-radius: 4px;
+    		width: 100%;
+			color: white;
+
+			padding: 12px 12px;
+		}
+		.subbtn:hover{
+			background-color: #7B7B74;
+		}
