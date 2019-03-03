@@ -5,7 +5,7 @@ ini_set('session.gc_maxlifetime', 30);
 session_set_cookie_params(30);
 session_start();
 
-include '../config.php';
+include '../Scripts/config.php';
 $errmsg;
 if(isset($_POST['username']) && isset($_POST['password'])){
 
@@ -19,6 +19,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		$login=false;
 		$correct_password=true;
 		$correct_user=false;
+		$role;
 		while($row = $result->fetch_assoc()) {
 				$correct_user=true;
 			if(password_verify($password, $row["password"])){
@@ -29,6 +30,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 				$_SESSION["role"] = $row["Role"];
 				$email_verify=true;
 				$login=true;
+				$role=$row["Role"];
 
 				}
 
@@ -42,8 +44,12 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	      
 	    }
 	    if($login  &&$email_verify){
-	    	echo "login success";
-	    	header("Location: http://yushae.com/");
+	    	
+	    	
+	    
+		    	echo "login success";
+		    	header("Location: http://yushae.com/Seng300/");
+	    	
 	    }
 	    else{
 	    	if($correct_user){
@@ -98,7 +104,7 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 
 <br>
 <div class ="form">
-<div id="message">
+<div  id="message">
 <?php 
 if (isset($errmsg)) {
 	echo $errmsg;
@@ -122,7 +128,7 @@ if (isset($errmsg)) {
 
 </form>
 <br>
-<button onclick="window.location.href = 'http://yushae.com/Register';" class="subbtn">Create a Account</button>
+<button onclick="window.location.href = 'http://yushae.com/Seng300/Register';" class="subbtn">Create a Account</button>
 </div>
 </div>
 

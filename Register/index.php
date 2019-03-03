@@ -1,6 +1,6 @@
 
 <?php
-include '../config.php';
+include '../Scripts/config.php';
 if(isset($_POST['name'])){
 	echo $_POST['name'];
 }
@@ -10,7 +10,7 @@ function send_email($email,$username,$token){
 	$message="<html>
 	<head></head>
 	<body> <p> please verify your email
-	<a href='http://yushae.com/verify?username=" . $username . "&token=" . $token . "'>link.</a>
+	<a href='http://yushae.com/Seng300/verify?username=" . $username . "&token=" . $token . "'>link.</a>
 
 	</p></body></html>";
 	$headers[] = 'MIME-Version: 1.0';
@@ -42,11 +42,30 @@ if (isset($_POST["submit2"])){
 					if(!$dublicate){
 						$password=  password_hash($_POST['password'], PASSWORD_BCRYPT);
 						$vtoken = bin2hex(openssl_random_pseudo_bytes(64));
-						$sql=("INSERT INTO Users (`Username` ,`password` ,`Email`, `Name`,`Address`, `Province` ,`City`,`Country`,`Postal`,`vtoken`) VALUES('".$_POST['username']."','".$password."','".$_POST['email']."','".$_POST['fname']."','".$_POST['street']."','".$_POST['province']."','".$_POST['city']."','".$_POST['country']."','".$_POST['postal']."','".$vtoken."')");
+						$sql=("INSERT INTO Users (`Username` ,`password` ,`Email`, `Name`,`Address`, `Province` ,`City`,`Country`,`Postal`,`vtoken`) VALUES('".$_POST['username']."','".$password."','".$_POST['email']."','".$_POST['Name']."','".$_POST['street']."','".$_POST['province']."','".$_POST['city']."','".$_POST['country']."','".$_POST['postal']."','".$vtoken."')");
 						if($connection->query($sql)){
+							$sql= "SELECT UserId FROM Users WHERE Username =('".$_POST['username']."' ) ";
+							$result = $connection -> query($sql);
+							$login=false;
+							$correct_password=true;
+							$correct_user=false;
+							$userid;
+							while($row = $result->fetch_assoc()) {
+								$userid=$row['UserId'];
+							}
+
+							$sql= ("INSERT INTO Regular (`USERID`,`Health_CareCard`) VALUES('".$userid."','".$_POST['healthcardnumber']."')");
+							if($connection->query($sql)){
 								$GLOBALS['errmsg']= "Account created successfully";
 								send_email($_POST['email'],$_POST['username'],$vtoken);
-							$connection->close();
+								header("Location: http://yushae.com/Seng300/Login");
+								$connection->close();
+							}
+							else{
+							    echo "Error: " . $sql . "<br>" . $connection->error;
+
+							}
+							
 						}
 						else{
 							    echo "Error: " . $sql . "<br>" . $connection->error;
@@ -72,10 +91,10 @@ if (isset($_POST["submit2"])){
 
 function is_full(){
 	$GLOBALS['errmsg'];
-	$fields=  array("fname","username","email","password","password2","street","postal","city","province","country");
+	$fields=  array("Name","username","email","password","password2","street","postal","city","province","country");
 	foreach ($fields as $field) {
 		if(empty($_POST[$field])){
-			$GLOBALS['errmsg']= $field."is not filled ";
+			$GLOBALS['errmsg'].= $field." is not filled. <br>";
 			return false;
 		}
 		else{
@@ -117,7 +136,7 @@ if (isset($errmsg)) {
 	<div id = "page1">
 	<label>Full Name </label>
 	
-	<input   class="form-inp" type="text"  name="fname" placeholder="Full Name">
+	<input   class="form-inp" type="text"  name="Name" placeholder="Full Name">
 	<label>UserName</label>
 		<input class="form-inp" type="text"  name="username" placeholder="UserName" >
 	<label>Email</label>
@@ -140,10 +159,17 @@ if (isset($errmsg)) {
 		<input class="form-inp" type="text"  name="province" placeholder="Province" >
 
 	<label>Country</label>
+	
+
 		<input class="form-inp" type="text"  name="country" placeholder="Country" >
+		<label>Health Card number</label>
+		<input  class="form-inp" type ="number" name="healthcardnumber" placeholder="Health card number">
+	<button type ="button" 	class=" subbtn" onclick="showpage1()"> Back</button><br><br>
 	<input  type="submit" name="submit2" class="subbtn" value="Create Account">
 </div>
 </form>
+<br>
+<button onclick="window.location.href = 'http://yushae.com/Seng300/Login';" class="subbtn">Log in</button>
 </div>
 </div>
 <script type="text/javascript">
@@ -152,6 +178,12 @@ if (isset($errmsg)) {
 		var page2=document.getElementById("page2");
 		page1.style="display:none;";
 		page2.style.display="block";
+	}
+	function showpage1(){
+		var page1 = document.getElementById("page1");
+		var page2=document.getElementById("page2");
+		page1.style="display:block;";
+		page2.style.display="none";
 	}
 </script>
 </body>

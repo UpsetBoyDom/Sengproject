@@ -1,4 +1,4 @@
-<?php include 'loggout.php'; 
+<?php include 'Scripts/loggout.php'; 
 ?>
 <!DOCTYPE html>
 <html>

@@ -1,5 +1,5 @@
 <?php
-include '../config.php';
+include '../Scripts/config.php';
 if(isset($_GET["username"] )&& isset($_GET["token"])){
 	$username=$_GET["username"];
 	$vtoken=$_GET["token"];
@@ -21,10 +21,13 @@ if(isset($_GET["username"] )&& isset($_GET["token"])){
 	}
 	if($user_exit && $same_token){
 		echo "email succesfully verified";
+
 		$sql = "UPDATE Users SET verified = 1 WHERE Username=('".$username."')";
 		$result = $connection->query($sql);
 		$sql = "UPDATE Users SET vtoken =   NULL   WHERE Username=('".$username."')";
 		$result = $connection->query($sql);
+		header("Location: http://yushae.com/Seng300/");
+
 	}
 
 
@@ -36,9 +39,9 @@ if(isset($_GET["username"] )&& isset($_GET["token"])){
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Congrats it worked2 </title>
+
 </head>
 <body>
 
 </body>
-</html>>
+</html>
