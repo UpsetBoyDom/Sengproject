@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>login</title>
 </head>
 <body>
 <form method="post"><input type="submit" name="Logout" value="Logout"></form>
