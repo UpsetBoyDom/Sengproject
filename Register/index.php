@@ -1,10 +1,25 @@
 
 <?php
+/**
+ * @author Yushae Raza
+ * March 25, 2019
+ * SENG 300 Project iteration 1
+ * php file to register user
+ * 
+ */
+
 include '../Scripts/config.php';
 if(isset($_POST['name'])){
 	echo $_POST['name'];
 }
 $errmsg="";
+
+/**
+ * Sends a verification email to the new user
+ * @param email the recipient of the verification email
+ * @param username the recipient's username
+ * @param token the recipient's token includes their identity and privileges of their account
+ */
 function send_email($email,$username,$token){
 	$subject = "Email Verification";
 	$message="<html>
@@ -89,6 +104,11 @@ if (isset($_POST["submit2"])){
 	}
 }
 
+/**
+ * Checks if all the fields of the user are set
+ * 
+ * @return value Bool if all the fields are set
+ */
 function is_full(){
 	$GLOBALS['errmsg'];
 	$fields=  array("Name","username","email","password","password2","street","postal","city","province","country");

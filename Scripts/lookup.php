@@ -1,8 +1,13 @@
 <?php
+/**
+ * @author Yushae Raza
+ * March 25, 2019
+ * SENG 300 Project iteration 1
+ * php file to look up a patient
+ * 
+ */ 
 	include '../Scripts/config.php';
 	if(isset($_POST['patient'])){
- 	
-
 
 	 	$sql=("SELECT * FROM `Regular`");
 	 	$test=array();
