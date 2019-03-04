@@ -1,4 +1,11 @@
 <?php
+/**
+ * @author Yushae Raza
+ * March 25, 2019
+ * SENG 300 Project iteration 1
+ * php file confirm verification email
+ * 
+ */ 
 include '../Scripts/config.php';
 if(isset($_GET["username"] )&& isset($_GET["token"])){
 	$username=$_GET["username"];
@@ -8,7 +15,7 @@ if(isset($_GET["username"] )&& isset($_GET["token"])){
 	$same_token=false;
 	$user_exit=false;
 
-
+	//check that the user is authenticated
 	while($row = $result->fetch_assoc()) {
 		if($row['Username']==$username){
 			echo "yes";

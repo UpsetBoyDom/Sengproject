@@ -1,4 +1,12 @@
 <?php
+/**
+ * @author Yushae Raza
+ * March 25, 2019
+ * SENG 300 Project iteration 1
+ * php file for logging in user
+ * 
+ */
+
 ini_set('session.gc_maxlifetime', 30);
 
 // each client should remember their session id for EXACTLY 1 hour
@@ -7,12 +15,14 @@ session_start();
 
 include '../Scripts/config.php';
 $errmsg;
+//verify if a user and password are set and not null
 if(isset($_POST['username']) && isset($_POST['password'])){
 
 	$username=$_POST['username'];
 	$password= $_POST['password'];
 	$email_verify=false;
 
+	//verify that a username and password are set and not null
 	if(strlen($username)>0 && strlen($password)>0){
 		$sql= "SELECT * FROM Users WHERE Username =('".$username."' ) ";
 		$result = $connection -> query($sql);
@@ -20,6 +30,8 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 		$correct_password=true;
 		$correct_user=false;
 		$role;
+		//check if the user exists in the database 
+
 		while($row = $result->fetch_assoc()) {
 				$correct_user=true;
 			if(password_verify($password, $row["password"])){
@@ -44,9 +56,6 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	      
 	    }
 	    if($login  &&$email_verify){
-	    	
-	    	
-	    
 		    	echo "login success";
 		    	header("Location: http://yushae.com/Seng300/");
 	    	
@@ -74,22 +83,12 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 	}
 
 
-
-
-
 }
 
-
-
-
-
-
-
-
-
-
-
 ?>
+
+
+
 <!DOCTYPE html>
 <html>
 <head>
