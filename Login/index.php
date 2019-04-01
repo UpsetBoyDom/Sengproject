@@ -1,89 +1,5 @@
 <?php
-/**
- * @author Yushae Raza
- * March 25, 2019
- * SENG 300 Project iteration 1
- * php file for logging in user
- * 
- */
 
-ini_set('session.gc_maxlifetime', 30);
-
-// each client should remember their session id for EXACTLY 1 hour
-session_set_cookie_params(30);
-session_start();
-
-include '../Scripts/config.php';
-$errmsg;
-//verify if a user and password are set and not null
-if(isset($_POST['username']) && isset($_POST['password'])){
-
-	$username=$_POST['username'];
-	$password= $_POST['password'];
-	$email_verify=false;
-
-	//verify that a username and password are set and not null
-	if(strlen($username)>0 && strlen($password)>0){
-		$sql= "SELECT * FROM Users WHERE Username =('".$username."' ) ";
-		$result = $connection -> query($sql);
-		$login=false;
-		$correct_password=true;
-		$correct_user=false;
-		$role;
-		//check if the user exists in the database 
-
-		while($row = $result->fetch_assoc()) {
-				$correct_user=true;
-			if(password_verify($password, $row["password"])){
-				if($row["verified"]==1){
-
-				$_SESSION["id"] = $row["UserId"];
-				$_SESSION["username"] = $row["Username"];
-				$_SESSION["role"] = $row["Role"];
-				$email_verify=true;
-				$login=true;
-				$role=$row["Role"];
-
-				}
-
-
-
-			}
-			else{
-				$correct_password=false;
-			}
-			
-	      
-	    }
-	    if($login  &&$email_verify){
-		    	echo "login success";
-		    	header("Location: http://yushae.com/Seng300/");
-	    	
-	    }
-	    else{
-	    	if($correct_user){
-		    	if(!$email_verify){
-		    		$errmsg="please verify your email ";
-		    	}
-		    	if(!$correct_password){
-		    		$errmsg="Incorrect password or username";
-		    	}
-	   		}
-	    else{
-	    	$errmsg="Incorrect username";
-	    }
-	    	
-	    	session_unset();
-	    	session_destroy();
-	    }
-	}
-	else{
-
-		$errmsg= "please fill in your username and password";
-	}
-
-
-}
 
 ?>
 
@@ -93,43 +9,70 @@ if(isset($_POST['username']) && isset($_POST['password'])){
 <html>
 <head>
 	<title></title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<!-- Popper JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+
+<!-- Latest compiled JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="../Styles/style.css?v1.05">
-	
+<script type="text/javascript" src="../Scripts/loader.js"></script>
+<script type="text/javascript" src="../Scripts/nav.js"></script>
+<style type="text/css">
+
+</style>
 </head>
-<body  onload="test.reset();">
-<div id= "wrapper">
+<body >
 <h1>Login</h1>
+ <div class="navb"></div>
+<hr>
+<div class="container form-container">
+ 
 
 
 <br>
-<div class ="form">
-<div  id="message">
-<?php 
-if (isset($errmsg)) {
-	echo $errmsg;
-}
-
-
-
-?>
+<div class ="col-md-6 form">
+	<div class="text-center">
+ <div id="loader" ></div>
 </div>
-<form   novalidate action="" id ="test" method="POST" autocomplete="off class="form-inpister">
+
+	<div  id="message">
+	<?php 
+	if (isset($_GET['errmsg'])) {
+		echo $_GET['errmsg'];
+	}
+
+
+
+	?>
+	</div>
+
+	<form   novalidate action="../Scripts/login.php" method="POST" autocomplete="off">
+
+		 <div class="form-group">
+		<label for="username">UserName</label>
+		<input class="form-control" type="text"  name="username" placeholder="UserName" >
+		</div>
+		
+		 <div class="form-group">
+		<label for="pwd">Password</label>
+		<input type="Password" name="password" class="form-control" placeholder="Password">
+	</div>
+		<div class="center-btn">
+		<input  type="submit" name="submit2" class="btn btn-primary sub" value="Login">
+	</div>
+		  <div class="form-group center-btn">
+           <a href="https://www.yushae.com/Seng300/Register" class="link">Create Account?</a>
+           </div>
+
+	</form>
 
 	
-	<label>UserName</label>
-	<input class="form-inp" type="text"  name="username" placeholder="UserName" >
-	
-	<label>Password</label>
-	<input type="Password" name="password" class="form-inp" placeholder="Password">
+	</div>
 
-
-	<input  type="submit" name="submit2" class="subbtn" value="Login">
-
-</form>
-<br>
-<button onclick="window.location.href = 'http://yushae.com/Seng300/Register';" class="subbtn">Create a Account</button>
 </div>
-</div>
-
 </body>
 </html>

@@ -6,8 +6,15 @@
  * php file to connect to the database
  * 
  */
+ini_set('session.gc_maxlifetime', 30);
 
-$servername="localhost";
+// each client should remember their session id for EXACTLY 1 hour
+session_set_cookie_params(30);
+if(!isset($_SESSION)) 
+    { 
+        session_start(); 
+    } 
+$servername="localhost"; //ljmm zvtikbf !!!
 $username="root";
 $password= "yus123";
 $database= "Hospital Managment";

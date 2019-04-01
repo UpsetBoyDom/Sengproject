@@ -1,110 +1,179 @@
-<?php
-include '../Scripts/loggout.php';
+<?php include '../Scripts/loggout(admin).php'; 
+/**
+ * @author Yushae Raza
+ * March 25, 2019
+ * SENG 300 Project iteration 1
+ * php file logout page if login is successful
+ * 
+ */ 
 ?>
 
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Full Calendar Example</title>
-    <link rel="shortcut icon" type="image/c-icon" href="https://image.flaticon.com/icons/svg/4/4430.svg"/>
 
-    <script src="https://www.gstatic.com/firebasejs/5.8.2/firebase.js"></script>
-    <script src="src/firebaseInit.js"></script>
+<!-- Fullcalendar stylesheet from bootstrap -->
+<link href='https://use.fontawesome.com/releases/v5.0.6/css/all.css' rel='stylesheet'>
+<link href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css' rel='stylesheet' />
 
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/5.8.2/firebase-app.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/5.8.2/firebase-auth.js"></script>
-    <script defer src="/__/firebase/5.8.2/firebase-database.js"></script>
-    <script defer src="/__/firebase/5.8.2/firebase-messaging.js"></script>
-    <script defer src="/__/firebase/5.8.2/firebase-storage.js"></script>
-    <!-- initialize the SDK after all desired features are loaded -->
-    <script defer src="/__/firebase/init.js"></script>
+<!-- Calendar CSS -->
+<link rel='stylesheet' href='./fullcalendar-3.10.0/fullcalendar.css' />
 
-    <!-- BootStrap CDN-->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" >
-    <script src="https://fullcalendar.io/releases/fullcalendar/3.10.0/lib/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+ <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-    <!-- Momentjs -->
-    <script src='https://fullcalendar.io/releases/fullcalendar/3.10.0/lib/moment.min.js'></script>
 
-    <!-- Full Calendar CDN -->
-    <script src='https://fullcalendar.io/releases/fullcalendar/3.10.0/fullcalendar.min.js'></script>
-    <link rel="stylesheet" href="https://fullcalendar.io/releases/fullcalendar/3.10.0/fullcalendar.min.css">
+<!-- JavaScript Calendar -->
 
-    <!-- Timepicker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/timepicker@1.11.14/jquery.timepicker.css">
-    <script src='https://cdn.jsdelivr.net/npm/timepicker@1.11.14/jquery.timepicker.min.js'></script>
+<script src='./fullcalendar-3.10.0/lib/moment.min.js'></script>
+<script src="./fullcalendar-3.10.0/fullcalendar.js"></script>
+<script src="../Scripts/bookingscripts.js"></script>
+<link href='../Styles/style.css' rel='stylesheet' />
 
-    <!-- Datepicker -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/css/datepicker.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.3.0/js/bootstrap-datepicker.js"></script>
-
-    <!--datepair -->
-    <script src="https://cdn.bootcss.com/datepair.js/0.4.16/datepair.js"></script>
-    <script src="https://cdn.bootcss.com/datepair.js/0.4.16/jquery.datepair.js"></script>
-
-    <!-- Font Awesome CDN-->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.6/css/all.css">
-
-    <!--Code-->
-    <script src="src/calendar.js"></script>
-
+<script src='../Scripts/nav.js'> </script>
 
 </head>
-<body background="https://images.wallpaperscraft.com/image/glare_circles_bokeh_124684_1920x1080.jpg">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Full Calendar Example</a>
-    </nav>
-    <div class="">
-        <div class="mr-3 ml-3 mt-3 p-3 border bg-light">
-            <div class="p-3">
-                <div class="row ">
-                    <div class="w-50">
-                        <div id="cal"></div>
-                    </div>
-                    <div class="w-50">
-                        <div class="ml-3 border h-100">
-                            <div class="p-3">
-                                <div class="container">
-                                    <div class="alert alert-warning invisible" role="alert">
-                                        Please Enter All Fields to submit appointment
-                                    </div>
-                                    <div>
-                                        <div class="form-group">
-                                            <label for="">Name</label>
-                                            <input id="name" class="form-control" type="text" placeholder="Enter Name" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Date</label>
-                                            <input class="form-control" id="date" type="text" placeholder="Enter date" />
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="">Time</label>
-                                            <div id="timePair" class="input-group">
-                                                <input class="form-control time start" type="text" placeholder="Enter time" />
-                                                <div class="input-group-append">
-                                                    <span class="input-group-text">to</span>
-                                                </div>
-                                                <input class=" form-control time end" type="text" value="" readonly/>
-                                            </div>
-                                            <small id="emailHelp" class="form-text text-muted">The duration of an appointment can only be to an hour.</small>
-                                        </div>
-                                        <div class="form-group">
-                                            <button id="submit" class="btn btn-primary">Submit</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+
+  <h1>Make Bookings</h1>
+<div class="navb"></div><br>
+<div class="row align-items-center justify-content-center">
+  <div class="col-md-5">
+  <div class="alert  alert-dismissible fade " role="alert" id="response_msg">
+      <p id="msg"></p>
+      <button type="button" id= "close_alert" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
+</div>
+</div>
+<div class="row">
+
+  <div class="col-md-2"></div>
+
+  <div id='calendar' class="col-md-8"></div>
+  <div class="col-md-2">
+  
+      <div>
+        <label for="">Available Doctors</label>
+ 
+        <select id="sel_doc" class="custom-select" onchange="select_doc(this)"><!-- get avaiable doctors from database -->
+          <option value="select">Select Docters</option>
+        
+        </select>
+     
+
+  </div>
+  <div>
+        <label for="">Available Nurses</label>
+ 
+        <select id="sel_nurse" class="custom-select" onchange="select_nurse(this)"><!-- get avaiable doctors from database -->
+          <option value="select">Select Nurses</option>
+        
+        </select>
+     
+
+  </div>
+</div>
+
+
+
+
+
+<!-- Trigger the modal with a button -->
+<button id="btnTrigger" type="button" style="display:none;" class="btn btn-info btn-lg"  data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Modal -->
+<div class="modal fade" id="appoinment" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <br>
+        
+      
+      </div>
+      <div class="modal-body">
+        <h2 class="text-center"> Book</h2>
+       <form   novalidate action="" method="POST" autocomplete="off">
+
+     <div class="form-group">
+    <label for="patients">Patients</label>
+    <select class="form-control" id="patients_sel" name="patients"  >
+      <option value="select">select patients</option>
+    </select>
+    </div>
+    
+     
+    <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text" name="Description" class="form-control" placeholder="Description">
+  </div>
+    <div class="center-btn">
+    <input  type="submit" name="submit2" class="btn btn-primary sub" value="Book Appoinment">
+  </div>
+      <div class="form-group center-btn">
+           <a href="https://www.yushae.com/Seng300/Register" class="link">Create Account?</a>
+           </div>
+
+  </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal for nurse scheduling-->
+<div class="modal fade" id="nurse_schedule" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <br>
+        
+      
+      </div>
+      <div class="modal-body">
+        <h2 class="text-center"> Schedule</h2>
+       <form   novalidate action="" method="POST" autocomplete="off">
+    
+     
+    <div class="form-group">
+    <label for="description">Description</label>
+    <input type="text" name="Description" class="form-control" placeholder="Description">
+  </div>
+    <div class="center-btn">
+    <input  type="submit" name="submit2" class="btn btn-primary sub" value="Book Appoinment">
+  </div>
+      <div class="form-group center-btn">
+           <a href="https://www.yushae.com/Seng300/Register" class="link">Create Account?</a>
+           </div>
+
+  </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
 </body>
+
 </html>
