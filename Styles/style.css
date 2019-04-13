@@ -29,7 +29,11 @@ body {
 }
 /* change the color of active or hovered links */
 
-.
+.sticky{
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
 .navbar-custom .nav-item:hover .nav-link {
     color: black;
 }
