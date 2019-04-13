@@ -56,27 +56,16 @@
 <div class="row">
 
   <div class="col-md-2"></div>
-
   <div id='calendar' class="col-md-8"></div>
-  <div class="col-md-2">
-  
-      <div>
-        <label for="">Available Doctors</label>
- 
-        <select id="sel_doc" class="custom-select" onchange="select_doc(this)"><!-- get avaiable doctors from database -->
-          <option value="select">Select Docters</option>
-        
-        </select>
-     
 
-  </div>
-  <div>
-        <label for="">Available Nurses</label>
- 
-        <select id="sel_nurse" class="custom-select" onchange="select_nurse(this)"><!-- get avaiable doctors from database -->
-          <option value="select">Select Nurses</option>
-        
-        </select>
+  <div class="col-md-2">
+    <div class="mr-4">
+      <label for="">Available Doctors</label>
+
+      <select id="sel_doc" class="custom-select" onchange="select_doc(this)"><!-- get avaiable doctors from database -->
+        <option value="select">Select Docters</option>
+      
+      </select>
      
 
   </div>
@@ -120,9 +109,7 @@
     <div class="center-btn">
     <input  type="submit" name="submit2" class="btn btn-primary sub" value="Book Appoinment">
   </div>
-      <div class="form-group center-btn">
-           <a href="https://www.yushae.com/Seng300/Register" class="link">Create Account?</a>
-           </div>
+
 
   </form>
 
@@ -134,41 +121,49 @@
   </div>
 </div>
 <!-- Modal for nurse scheduling-->
-<div class="modal fade" id="nurse_schedule" role="dialog">
+ <div class="modal" id="appoinment-details">
   <div class="modal-dialog">
-
-    <!-- Modal content-->
     <div class="modal-content">
+
+      <!-- Modal Header -->
       <div class="modal-header">
+        <h4 class="modal-title">Appointment Details</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
-        <br>
-        
-      
       </div>
+
+      <!-- Modal body -->
       <div class="modal-body">
-        <h2 class="text-center"> Schedule</h2>
-       <form   novalidate action="" method="POST" autocomplete="off">
-    
+        
+        <h5>Title: </h5>
+        <p id="title"></p>
+      
+        <h5>Description: </h5>
+        <p id="desc"></p>
      
-    <div class="form-group">
-    <label for="description">Description</label>
-    <input type="text" name="Description" class="form-control" placeholder="Description">
+        <p id="appoinmentid" style="display: none;">
+     
+        
+        <h5>Start: </h5>
+        <p id="start"></p>
+  
+       
+        <h5>End: </h5>
+        <p id="end"></p>
+          <div class="center-btn">
+           <button type="button"  onclick ="delete_appointment()" class="btn btn-primary sub">Delete Appoinment</button> 
   </div>
-    <div class="center-btn">
-    <input  type="submit" name="submit2" class="btn btn-primary sub" value="Book Appoinment">
-  </div>
-      <div class="form-group center-btn">
-           <a href="https://www.yushae.com/Seng300/Register" class="link">Create Account?</a>
-           </div>
-
-  </form>
-
+        
       </div>
+
+      <!-- Modal footer -->
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
       </div>
+
     </div>
   </div>
+</div>
+
 </div>
 
 
