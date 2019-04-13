@@ -30,7 +30,7 @@
  <body>
 
  
- <div id="wrapper">
+ <div id="content">
  <h1>Admin</h1>
  <div class="navb"></div><br>
  <br>
@@ -38,29 +38,84 @@
 
  <div class="Admin" >
  	
+   <div >
+   	<div class="row">
+   		<div class="col">
+   	<button class="btn btn-primary sub" onclick="view_patients()">View Patients</button>
+   </div>
+   <div class="col">
+   	<button class="btn btn-primary sub" onclick="view_nurses()">View Nurses</button>
+   </div>
+   <div class="col">
+   	<button class="btn btn-primary sub" onclick="view_doctors()">View Doctors</button>
+   </div>
 
+   	</div>
+   </div>
 
  </div>
- <div class="patients">
-  <h3 class="patient heading">Patients</h3>
- <table  id="patient" class="patients_table">
+
+ <div class="patients table  " id="patients_table">
+<h3 class="patient heading">Patients</h3>
+ <table  id="patient" class="table">
  <thead>
  <tr>
- 	<th>User Id</th>
- 	<th>Full Name</th>
- 	<th>Email</th>
- 	<th>Address</th>
- 	<th>Provice</th>
- 	<th>City</th>
- 	<th>Country</th>
- 	<th>Postal</th>
- 	<th>Health Card Number</th>
+ 	<th scope="col">User Id</th>
+ 	<th scope="col">Full Name</th>
+ 	<th scope="col">Email</th>
+ 	<th scope="col">Address</th>
+ 	<th scope="col">Provice</th>
+ 	<th scope="col">City</th>
+ 	<th scope="col">Country</th>
+ 	<th scope="col">Postal</th>
+ 	<th scope="col">Health Card</th>
 
  </tr>
  </thead>
  </table>
 
  </div>
+ <div class="patients table  " id="docters_table" style="display: none;">
+<h3 class="patient heading">Doctors</h3>
+ <table  id="doctors" class="table">
+ <thead>
+ <tr>
+ 	<th scope="col">User Id</th>
+ 	<th scope="col">Full Name</th>
+ 	<th scope="col">Email</th>
+ 	<th scope="col">Address</th>
+ 	<th scope="col">Provice</th>
+ 	<th scope="col">City</th>
+ 	<th scope="col">Country</th>
+ 	<th scope="col">Postal</th>
+ 	<th scope="col">department</th>
+
+ </tr>
+ </thead>
+ </table>
+
+ </div>
+ <div class="patients table  " id="nurses_table" style="display: none;">
+<h3 class="patient heading">Nurses</h3>
+ <table  id="nurses" class="table">
+ <thead>
+ <tr>
+ 	<th scope="col">User Id</th>
+ 	<th scope="col">Full Name</th>
+ 	<th scope="col">Email</th>
+ 	<th scope="col">Address</th>
+ 	<th scope="col">Provice</th>
+ 	<th scope="col">City</th>
+ 	<th scope="col">Country</th>
+ 	<th scope="col">Postal</th>
+ 	<th scope="col">department</th>
+
+ </tr>
+ </thead>
+ </table>
+
+ </div>
+
 
  </div>
  </body>

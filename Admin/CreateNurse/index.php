@@ -207,8 +207,11 @@ function is_full(){
 <div class="form-group">
 	<label>Department:</label>
 	<select class="form-control"   name="department"  >
-		<option value="icu">icu</option>
-		<option value="emergency">i</option>
+		<option value="icu">ICU</option>
+		<option value="cardiology">Cardiology</option>
+		<option value="emergency">Emergency</option>
+		<option value="general_surgery">General Surgery</option>
+		<option value="neurology">Neurology</option>
 	</select>
 </div>
 
