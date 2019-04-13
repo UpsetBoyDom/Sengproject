@@ -38,10 +38,8 @@ if (isset($_POST["submit2"])){
   	//echo "asd";
 
 	if(is_full()){
-		
 		if($_POST["password"] ==$_POST["password2"]){
 			if(filter_var($_POST["email"], FILTER_VALIDATE_EMAIL)){
-				
 					$sql = "SELECT Username FROM Users";
 					$res= $connection->query($sql);
 					$dublicate=false;
@@ -52,7 +50,6 @@ if (isset($_POST["submit2"])){
 							$GLOBALS['errmsg']="That username already exists";
 						}
 					}
-
 					if(!$dublicate){
 						$password=  password_hash($_POST['password'], PASSWORD_BCRYPT);
 						$vtoken = bin2hex(openssl_random_pseudo_bytes(64));
@@ -108,7 +105,6 @@ if (isset($_POST["submit2"])){
 
 /**
  * Checks if all the fields of the user are set
- * 
  * @return value Bool if all the fields are set
  */
 function is_full(){

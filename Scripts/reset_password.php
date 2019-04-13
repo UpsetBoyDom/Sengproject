@@ -12,38 +12,38 @@ $errmsg="";
 /**
  * Updates the users password with the new password
  */
-    if(isset($_POST["submit"])){
-        if(is_full()){
-            if($_POST["password"]==$_POST["password2"]){
-                $exists = true;
-                    if($exists){
-                        $username = $_SESSION['username'];
-                        $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
-                        $sql = "UPDATE Users SET password='$password' WHERE Username='".$username."'";
-                        if($connection->query($sql)){
-                            $GLOBALS['errmsg'] = "Your Password has been reset";
-                            header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");
-                            $connection->close();
-                        }
-                    }else{
-                        $GLOBALS['errmsg'] = "You are not logged in";
-                        header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");    
+if(isset($_POST["submit"])){
+    if(is_full()){
+        if($_POST["password"]==$_POST["password2"]){
+            $exists = true;
+                if($exists){
+                    $username = $_SESSION['username'];
+                    $password = password_hash($_POST['password'],PASSWORD_BCRYPT);
+                    $sql = "UPDATE Users SET password='$password' WHERE Username='".$username."'";
+                    if($connection->query($sql)){
+                        $GLOBALS['errmsg'] = "Your Password has been reset";
+                        header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");
+                        $connection->close();
                     }
                 }else{
-                    $GLOBALS['errmsg'] = "Your Passwords dont match";
-                    header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");
+                    $GLOBALS['errmsg'] = "You are not logged in";
+                    header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");    
                 }
             }else{
-                $GLOBALS['errmsg'] = "Missing field";
+                $GLOBALS['errmsg'] = "Your Passwords dont match";
                 header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");
             }
+        }else{
+            $GLOBALS['errmsg'] = "Missing field";
+            header("Location: https://www.yushae.com/Seng300/Reset_Password?errmsg=".$GLOBALS['errmsg']."");
         }
+    }
 
 
  
 /**
- * returns boolean if all the fields of the form are set
- * @return Boolean if all the fields are set
+ * returns true or false if all the fields of the form are set
+ * @return true or false if all the fields are set
  */
 function is_full(){
 	$GLOBALS['errmsg'];

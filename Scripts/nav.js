@@ -6,48 +6,39 @@
  */
 $(document).ready(function() {     
       var sendDate = (new Date()).getTime();
-     
-         $.ajax({
+        $.ajax({
         type:"POST",
         url: '/Seng300/Scripts/files.php',
         data:{Name:"Menu/Menu.html"},
         success:function(data) {   
-                $('.navb').prepend(data);
-                var receiveDate = (new Date()).getTime();
-
-                var responseTimeMs = receiveDate - sendDate;
-                 //alert("server response time " + responseTimeMs);
-             //   generate_menu()
-   
-            }
+            $('.navb').prepend(data);
+            var receiveDate = (new Date()).getTime();
+            var responseTimeMs = receiveDate - sendDate;
+        }
       
     });
 
     var buttons=document.getElementsByClassName("dropdown");
         for(var i=0;i<buttons.length;i++){
-            
             buttons[i].onclick=function(event){
-              $(".dropdown-content").css("display", "none");
-            var test =this.childNodes[3];
-       
-       //console.log(this.childNodes[3])
-     
+            $(".dropdown-content").css("display", "none");
+            var test =this.childNodes[3];         
             event.stopPropagation();
-            $(test).css("display", "block");
-            
+            $(test).css("display", "block");            
             $(test).on("click", function (event) {
-                 event.stopPropagation();
+                event.stopPropagation();
             });
-
             }
-
         }
-        console.log(buttons.length)
-        
+        console.log(buttons.length);        
 });
    $(document).on("click", function () {
     $(".dropdown-content").css("display", "none");
 })
+
+/**
+ * Generates dropdown menu for navbar when viewed on small devices
+ */
 function generate_menu(){
   $( '.dropdownm' ).click(
             function(){

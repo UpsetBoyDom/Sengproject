@@ -14,7 +14,7 @@ if(!isset($_SESSION))
     { 
         session_start(); 
     } 
-$servername="localhost"; //ljmm zvtikbf !!!
+$servername="localhost";
 $username="root";
 $password= "yus123";
 $database= "Hospital Managment";

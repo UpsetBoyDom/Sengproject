@@ -12,7 +12,6 @@ include 'config.php';
 /**
  * Create a session if login is sucessful otherwise redirect user to login page
  */
-
 if(isset($_SESSION["username"] )){
 	echo "Welcome " .$_SESSION["username"];
 	if(isset($_POST['Logout'])||isset($_GET['Logout'])){

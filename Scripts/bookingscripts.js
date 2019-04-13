@@ -20,15 +20,12 @@ function daysBetween(first, second) {
 }
 var events=[];
 $(document).ready(function() {
- update_selections("doctors","`Doctor_ID`,`FullName`","sel_doc");
-
- update_selections_nurse("nurses","`Nurse_ID`,`FullName`","sel_nurse");
+  update_selections("doctors","`Doctor_ID`,`FullName`","sel_doc");
   update_pselections("Users","`UserId`,`Name`","patients_sel");
 
   var doc =new URLSearchParams(window.location.search);
   
   // page is now ready, initialize the calendar...
-  //closeForm();        // jank but works
   var today= new Date;
   var hour =today.getHours();
   var event;
@@ -38,34 +35,14 @@ $(document).ready(function() {
   $('#calendar').fullCalendar({
     selectable: true,
    
-    // put your options and callbacks here
+    // customize fullcalendar properties
     weekends: false,
     heightL: 700,
     aspectRatio: 2,   
-     defaultTimedEventDuration: '01:00:00',
-      slotDuration: '01:00:00',
+    defaultTimedEventDuration: '01:00:00',
+    slotDuration: '01:00:00',
     slotLabelInterval: 60,
 
-    
-    // customButtons: {
-    //   addEvent: {
-    //     text: 'Add Appointment',
-    //     click: function() {
-    //       var date = moment(dateStr);
-
-    //       if (date.isValid()) {
-    //         $('#calendar').fullCalendar('renderEvent', {
-    //           title: 'dynamic event',
-    //           start: date,
-    //           allDay: true
-    //         });
-    //         alert('Great. Now, update your database...');
-    //       } else {
-    //         alert('Invalid date.');
-    //       }
-    //     }
-    //   }
-    // },
     header: {
       left:'prev, next, today',
       center: 'title',
@@ -73,119 +50,77 @@ $(document).ready(function() {
     },
     themeSystem: 'bootstrap4',
     nowIndicator: true,
+    //cday click event
      
-   agendaDay : function (date, cell) {
-        cell.css("background-color", "red");
+    agendaDay : function (date, cell) {
+    cell.css("background-color", "red");
+    },
+    eventClick: function(calEvent, jsEvent, view) {
+    $("#title").text(calEvent.title);
+    $("#desc").text(calEvent.description);
+    $("#appoinmentid").text(calEvent.id);
+    console.log("id " + $("#appoinmentid").text())
+      
+    $("#start").text(calEvent.start);
+    $("#end").text(calEvent.end);
+    $("#appoinment-details").modal();
     },
     selectOverlap :false,
     select: function(start, end, jsEvent, view) {
-       $('#calendar').fullCalendar('unselect');
+      $('#calendar').fullCalendar('unselect');
       //console.log("hi")
       if(start.hasTime()){
         if (!IsDateHasEvent(start)) {
-                var from= moment(start).format("YYYY-MM-DD HH:mm:ss");
-                var end= moment(end).format("YYYY-MM-DD HH:mm:ss");
-                var doc=document.getElementById("sel_doc");
-                var did= doc.options[doc.selectedIndex].value;
-                var nurse = document.getElementById("sel_nurse");
-                var nurse_id= nurse.options[nurse.selectedIndex].value;
-                if(did!="select"){
-                    $("#appoinment").modal();
+                var from= moment(start).format("YYYY-MM-DD HH:mm:ss");//start date and time of the event
+                var end= moment(end).format("YYYY-MM-DD HH:mm:ss");//end date and time of the event
+                var doc=document.getElementById("sel_doc");//the select html element found in yushae.com/Seng300/Booking
+                var did= doc.options[doc.selectedIndex].value;//get the doctor from the select element options
+                if(did!="select"){//if a doctor is selected from the select options continue
+                    $("#appoinment").modal();//open the appointment modal
                     console.log(from);
                     $('form').off('submit');
                     $('form').on('submit', function (e) {
-                          console.log(from);
-                        e.preventDefault();
+                      console.log(from);
+                      e.preventDefault();
                        
-                        var pat= document.getElementById("patients_sel");
-                        var pname=  pat.options[pat.selectedIndex].text;
-                        var dname= doc.options[doc.selectedIndex].text;
+                      var pat= document.getElementById("patients_sel");//the patient selected from the drop down menu html select element
+                      var pname= pat.options[pat.selectedIndex].text;//get the name of the patient
+                      var dname= doc.options[doc.selectedIndex].text;//get the name of the doctor
                        
-                        var title= "Dr. " +dname+ "s appoinment with " +pname;
-                       $("#appoinment").modal('hide');
-                       var dat= $('form').serialize()+ "&from=" + from+"&till=" + end+"&title=" + title+"&doc_id=" + did;
-                       $('form').trigger("reset");
-                     //  console.log(dat)
-                        $.ajax({
-                          type: 'post',
-                          url: '../Scripts/lookup.php',
-                          data: dat,
-                          success: function (data) {
-                            $('#msg').empty();
-                            $('#msg').append(data);
-                            select_doc(doc);
-                            $('#response_msg').addClass(' alert-success');
-                            $('#response_msg').fadeTo(2000, 500).slideUp(500, function(){
-                           $("#response_msg").slideUp(500);
-                            }); 
-                           
-                            
-                          }
-                        });
-
-                   });    $('#calendar').fullCalendar('refetchEvents');
-
+                      var title= "Dr. " +dname+ "s appoinment with " +pname;//title for the appointment
+                      $("#appoinment").modal('hide');
+                      var dat= $('form').serialize()+ "&from=" + from+"&till=" + end+"&title=" + title+"&doc_id=" + did;
+                      $('form').trigger("reset");
+                  
+                      $.ajax({//use ajax to update the page asynchronously with the new appointment
+                        type: 'post',
+                        url: '../Scripts/lookup.php',
+                        data: dat,
+                        success: function (data) {
+                          $('#msg').empty();
+                          $('#msg').append(data);
+                          select_doc(doc);
+                          //animate error message on page
+                          $('#response_msg').addClass(' alert-success');
+                          $('#response_msg').fadeTo(2000, 500).slideUp(500, function(){
+                          $("#response_msg").slideUp(500);
+                          });                                                     
+                        }
+                      });
+                   }); $('#calendar').fullCalendar('refetchEvents');//update the calendar to display new appointment
                 }
-
               else{
                 $('#msg').empty();
-                $('#msg').append("Please select a doctor");
-                
+                $('#msg').append("Please select a doctor");//error message if no doctor is selected from the html select element                
                 $('#response_msg').addClass('alert-warning');
                 $('#response_msg').fadeTo(2000, 500).slideUp(500, function(){
-               $("#response_msg").slideUp(500);
+                $("#response_msg").slideUp(500);//animate the error message on screen
                 });   
                 
               }
-              if(nurse_id!="select")
-              {
-                $("#nurse_schedule").modal();
-                console.log("nurseselected"); 
-                console.log(nurse_id);
-                $('form').off('submit');
-                    $('form').on('submit', function (e) {
-                          console.log(from);
-                        e.preventDefault();
-                       
-                        var pat= -1;
-                        //var pname=  pat.options[pat.selectedIndex].text;
-                        //var dname= doc.options[doc.selectedIndex].text;
-                       
-                        var title= "Shift from " + from + "to" + end;
-                       $("#nurse_schedule").modal('hide');
-                       var dat= $('form').serialize()+ "&from=" + from+"&till=" + end+"&title=" + title+"&nurse_id=" + nurse_id;
-                       $('form').trigger("reset");
-                     //  console.log(dat)
-                        $.ajax({
-                          type: 'post',
-                          url: '../Scripts/lookup.php',
-                          data: dat,
-                          success: function (data) {
-                            $('#msg').empty();
-                            $('#msg').append(data);
-                            console.log(data);
-                            select_doc(doc);
-                            $('#response_msg').addClass(' alert-success');
-                            $('#response_msg').fadeTo(2000, 500).slideUp(500, function(){
-                           $("#response_msg").slideUp(500);
-                            }); 
-                           
-                            
-                          }
-                        });
-
-                   });
-
-              }
-              else
-              {
-                console.log("nursenotselected");
-              }
         }
       }
-        $('#calendar').fullCalendar('unselect')
-
-
+      $('#calendar').fullCalendar('unselect')//unselect the date and time after succesfully creating a new appointment
     },
    
 
@@ -209,16 +144,8 @@ $(document).ready(function() {
         if(check >= today){
           $('#calendar').fullCalendar('gotoDate',date);
           $('#calendar').fullCalendar('changeView','agendaDay');
-            // change the day's background color just for fun
-          // $(this).css('background-color', 'red');
-
-            //$('#btnTrigger').click();
         } 
-      
 
-      
-
-      
     },
     events: function(start, end, timezone, callback) {
          callback(events);
@@ -254,55 +181,46 @@ function close_alert(){
  * @param id the html element id
  */
 function update_selections(tbname,col_name,id){
-
-  $.ajax({
+  $.ajax({//asynchronously update the page using
         type:"POST",
-        url: '../Scripts/lookup.php',
+        url: '../Scripts/lookup.php',//
         data:{'table':tbname,'column_name':col_name},
         success:function(data) { 
-            var docter= document.getElementById(id);
-           
+            var docter= document.getElementById(id);           
             var content = JSON.parse(data)
-             console.log(content)
-            for (i in content){
+            console.log(content)
+            for (i in content){//add doctors from the database to select 
                 var option=document.createElement("option");
                 option.value=content[i]["Doctor_ID"];
                 option.text=content[i]["FullName"];
-                docter.add(option);
-              
-            
+                docter.add(option);   
+            } 
             }
-              
-     
-              
-            }
-      
     });
 }
-function update_selections_nurse(tbname,col_name,id){
 
+/**
+ * Populate the html select element with nurses from the database
+ * @param  tbname the table name in the mysql database
+ * @param  col_name the attribute name in the table
+ * @param  id the html select element used to select nurses
+ */
+function update_selections_nurse(tbname,col_name,id){
   $.ajax({
         type:"POST",
-        url: '../Scripts/lookup.php',
+        url: '../Scripts/lookup.php',//perform sql query to return 
         data:{'table':tbname,'column_name':col_name},
         success:function(data) { 
-            var docter= document.getElementById(id);
-           
+            var docter= document.getElementById(id);           
             var content = JSON.parse(data)
-             console.log(content)
+            console.log(content)
             for (i in content){
                 var option=document.createElement("option");
                 option.value=content[i]["Nurse_ID"];
                 option.text=content[i]["FullName"];
-                docter.add(option);
-              
-            
-            }
-              
-     
-              
-            }
-      
+                docter.add(option);                          
+            }              
+            }      
     });
 }
 
@@ -328,14 +246,8 @@ function update_pselections(tbname,col_name,id){
                 option.value=content[i]["UserId"];
                 option.text=content[i]["Name"];
                 docter.add(option);
-              
-            
             }
-              
-     
-              
             }
-      
     });
 }
 
@@ -354,67 +266,53 @@ function closeForm() {
 }
 
 /**
- * 
- * @param doc 
+ * Delete a selected appointment
+ */
+function delete_appointment(){
+  var id = $("#appoinmentid").text();
+  var doc=document.getElementById("sel_doc");
+  $("#appoinment-details").modal('hide');
+   $.ajax({
+      type:"POST",
+      url: '../Scripts/lookup.php',     
+      data: {
+        // our hypothetical feed requires UNIX timestamps
+        delete:id//delete the appointment from the data base the corresponds to id 
+      },
+      success: function(data) {
+      console.log(data);
+      select_doc(doc);//update the calendars display after deleting the appointment  
+    }
+  });
+}
+
+/**
+ * Render appointments for the corresponding doctor @param doc
+ * @param doc the doctor being selected from the select element
  */
 function select_doc(doc){
-    var doc_id = doc.options[doc.selectedIndex].value;
-    if(doc_id!="select"){
+    var doc_id = doc.options[doc.selectedIndex].value;//the doctor selected from the html select element
+    if(doc_id!="select"){//if a doctor is selected perform ajax 
       $.ajax({
-       type:"POST",
-      url: '../Scripts/lookup.php',
+      type:"POST",
+      url: '../Scripts/lookup.php',//use sql query to update the 
       dataType: 'JSON',
       data: {
         // our hypothetical feed requires UNIX timestamps
-        
-          docid:doc_id
+        docid:doc_id
       },
       success: function(data) {
        console.log(data)
         var events = data.events;
         $('#calendar').fullCalendar('removeEvents');
-        //  $('#calendar').fullCalendar('addEventSource', events);         
-        //    setTimeout(function(){
-        //             $("#calendar").fullCalendar("rerenderEvents");
-        //         },50);
-          $('#calendar').fullCalendar( 'addEventSource', events );
-          $('#calendar').fullCalendar( 'rerenderEvents'); 
-          $('#calendar').fullCalendar('refetchEvents');
+        $('#calendar').fullCalendar( 'addEventSource', events );
+        $('#calendar').fullCalendar( 'rerenderEvents'); 
+        $('#calendar').fullCalendar('refetchEvents');
       }
     });
    
     }
 }
-function select_nurse(nurse){
-    var nurse_id = nurse.options[nurse.selectedIndex].value;
-    if(nurse_id!="select"){
-      $.ajax({
-       type:"POST",
-      url: '../Scripts/lookup.php',
-      dataType: 'JSON',
-      data: {
-        // our hypothetical feed requires UNIX timestamps
-        
-          nurse_id_sched:nurse_id
-      },
-      success: function(data) {
-       console.log(data)
-        var events = data.events;
-        console.log("nursedata"+data);
-        $('#calendar').fullCalendar('removeEvents');
-        //  $('#calendar').fullCalendar('addEventSource', events);         
-        //    setTimeout(function(){
-        //             $("#calendar").fullCalendar("rerenderEvents");
-        //         },50);
-          $('#calendar').fullCalendar( 'addEventSource', events );
-          $('#calendar').fullCalendar( 'rerenderEvents'); 
-          $('#calendar').fullCalendar('refetchEvents');
-      }
-    });
-   
-    }
-} 
-
 /**
  * Return boolean if the date has event
  * @param date the desired date 
@@ -427,6 +325,5 @@ function IsDateHasEvent(date) {
     var event = $.grep(allEvents, function (v) {
         return +v.start === +date;
     });
-
     return event.length > 0;
 }
